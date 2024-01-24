@@ -1,49 +1,42 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth"; // Import auth module
+import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"
+import  { auth } from './firebase.js'
 
+// function loginUser() {
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const loginForm = 
+          document.querySelector("#formLogin");
 
-const form = document.forms["formLogin"];
-
-form.addEventListener('submit', handleFormSubmit);
-
-function handleFormSubmit(event) {
-  event.preventDefault();
-  const email = form['correo'].value;
-  const password = form['password'].value;
-
-  console.log(`Correo: ${email}, password: ${password}`);
-
-  return loginUser(email, password);
-}
- import {auth} from "./firebase.js"
-const loginform = document.querySelector{"#formLogin"};
-loginform.addEventListener("submit", async(e) =>{
+loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const email = loginform["usuario"].value;
-  const Contraseña = loginform["Contraseña"].value;
+  const email = loginForm["correo"].value;
+  const password = loginForm["contrasena"].value;
+
+  // console.log(`Correo: ${email}, contraseña: ${password}`);
+
+  try{
+    const userCredentials = await signInWithEmailAndPassword(auth, email, password)
+    console.log("Bienvenido " + userCredentials.user.email)
+  }
+  catch(error){
+    // console.log(error.code)
+    if(error.code === 'auth/invalid-login-credentials'){
+      console.log("Datos incorrectos")
+    }
+  }
 })
 
-loginUser(email, password) {
-  console.log(`Correo: ${email}, password: ${password}`);
+  // var email = document.getElementById("correo").value;
+  // var password = document.getElementById("contrasena").value;
 
-  const auth = getAuth(app); // Get the auth object from the app
 
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // User signed in
-      const user = userCredential.user;git
-      console.log("User signed in:", user);
-    })
-    .catch((error) => {
-      // Handle errors here
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.error("Error:", errorCode, errorMessage);
-    });
-}
+  // console.log(`Correo: ${email}, contraseña: ${password}`);
+
+  // auth.signInWithEmailAndPassword(email, password)
+  //   .then((success) => {
+  //     console.log('Succesfully signed in')
+  //   }).catch((error) => {
+  //     console.log('Error')
+  //   });
+// }
+
